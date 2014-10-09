@@ -3,7 +3,7 @@ pmex repository
 
 Repository for source code and binaries for a plugin for Blender.
 The plugin is called Periodic Motion Extractor (pmex).
-The plugin extracts periodic motions from motion capture data, such as extracting a walk cycle from motion capture data from a human walking.
+The plugin extracts periodic motions from motion capture data, such as extracting a walk cycle from motion capture data of a human walking.
 
 binaries folder
 ===
