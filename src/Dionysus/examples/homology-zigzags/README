@@ -1,0 +1,43 @@
+********************************************************************************
+*		 Rips-ZZ: Rips Zigzags for Homology Inference                  *
+********************************************************************************
+
+This is an extension to the Rips package of the Dionysus library. It
+adapts the code of the Morozov zigzag (M-ZZ) and image Rips zigzag
+(iR-ZZ) to the context of the following paper:
+
+Title: Zigzag Zoology: Rips Zigzags for Homology Inference
+Authors: Steve Y. Oudot and Donald R. Sheehy
+
+It also provides two variants of the M-ZZ: the discretized Morozov
+zigzag (dM-ZZ) and the oscillating Rips zigzag (oR-ZZ).
+
+
+Source files:
+
+ - M-ZZ.cpp: implementation of the Morozov zigzag
+ - dM-ZZ.cpp: implementation of the discretized Morozov zigzag
+ - oR-ZZ.cpp: implementation of the oscillating Rips zigzag
+ - iR-ZZ.cpp: implementation of the image Rips zigzag
+ - rips-pairwise.cpp: computation of the standard Rips filtration 
+                      and its persistent homology.
+
+Execution:
+
+ - the list of arguments required by a program can be obtained by
+   running that program without arguments.
+
+ - every program takes in a point cloud file, in xyz... format (no
+   need to indicate the ambient dimension at the beginning of the
+   file. A sample point cloud is provided in the file
+   input/spiral_3d_10k.xyz
+
+ - every program also asks for the name of the output file in which
+   the barcode will be written. The output format is such that the
+   file can be executed in Matlab. This creates a cells structures
+   that can be read by the px_homologyplot function from the PLEX 2.5
+   library (a copy of which is provided). This function will plot the
+   barcode dimension per dimension.
+
+
+

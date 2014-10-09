@@ -1,0 +1,1 @@
+Compiled for 32 bit Windows, and Blender running Python 3.4

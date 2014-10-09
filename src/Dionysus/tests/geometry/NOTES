@@ -1,0 +1,5 @@
+Write an audit for the data structure.
+
+-DBOOST_UBLAS_TYPE_CHECK=0 is necessary since otherwise Boost's uBLAS gives a compile-time error 
+when it doesn't find sqrt for polynomials. It doesn't actually need it (e.g., for LU-decomposition, 
+but it looks for it during type check). (File a bug report with Boost?)
