@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from dionysus import data_dim_cmp, PairwiseDistances, Rips, Filtration, CohomologyPersistence, ExplicitDistances,DynamicPersistenceChains
+from pmex.dionysus import data_dim_cmp, PairwiseDistances, Rips, Filtration, CohomologyPersistence, ExplicitDistances,DynamicPersistenceChains
 
 import numpy
 

@@ -1,8 +1,8 @@
-from    _dionysus   import *
-from    distances   import l2, ExplicitDistances, points_file
-from    zigzag      import *
-from    adaptor     import *
-import  circular
+from    pmex.dionysus._dionysus   import *
+from    pmex.dionysus.distances   import l2, ExplicitDistances, points_file
+from    pmex.dionysus.zigzag      import *
+from    pmex.dionysus.adaptor     import *
+import  pmex.dionysus.circular
 
 def init_with_none(self, iter, data = None):        # convenience: data defaults to None
     self._cpp_init_(iter, data)

@@ -1,4 +1,4 @@
-from _dionysus import CohomologyPersistence, PersistenceDiagram, Cocycle
+from pmex.dionysus._dionysus import CohomologyPersistence, PersistenceDiagram, Cocycle
 
 class StaticCohomologyPersistence(object):
     def __init__(self, filtration, prime = 2, subcomplex = lambda s: True):
