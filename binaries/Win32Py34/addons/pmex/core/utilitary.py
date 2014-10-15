@@ -221,8 +221,11 @@ def velocityAcceleration(data, cycle_map):
                 
         alphas = cycle_map[lb:ub]
         alphas = [alphas[4],alphas[5],alphas[3],alphas[6],alphas[2],alphas[7],alphas[1],alphas[8],alphas[0]]
+        #alphas = [alphas[3],alphas[4],alphas[2],alphas[5],alphas[1],alphas[6],alphas[0]]
+
         dat = data[lb:ub]
         dat = numpy.array([dat[4],dat[5],dat[3],dat[6],dat[2],dat[7],dat[1],dat[8],dat[0]])
+        #dat = numpy.array([dat[3],dat[4],dat[2],dat[5],dat[1],dat[6],dat[0]])
         
         delta = generalFiniteDifference(3,accuracy*2,alphas,alphas[0])
         velocity_coefficients = delta[1,accuracy*2]

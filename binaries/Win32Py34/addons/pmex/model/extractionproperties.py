@@ -19,12 +19,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import bpy.props
 
 class ExtractionProperties(bpy.types.PropertyGroup):
-    dmax = bpy.props.FloatProperty(name="Maximum Distance", default=1.0, min=0)
+    dmax = bpy.props.FloatProperty(name="Maximum distance", default=1.0, min=0)
     #in_frame_rate = bpy.props.IntProperty(name="Frame rate", default=120, min=1)
     
     limit_input_range = bpy.props.BoolProperty( name="Limit input size", default=False)
-    start_frame = bpy.props.IntProperty(name="Start Frame", default=0, min=0)
-    frame_range = bpy.props.IntProperty(name="Frame Range", default=300, min=1)
+    start_frame = bpy.props.IntProperty(name="Start frame", default=0, min=0)
+    frame_range = bpy.props.IntProperty(name="Frame range", default=300, min=1)
     
     sampling_density = bpy.props.IntProperty(name="Sampling density", default=1, min=1)
         
@@ -50,9 +50,9 @@ class ExtractionProperties(bpy.types.PropertyGroup):
     
     #model_enum = [bpy.types.EnumPropertyItem(name="1"),bpy.types.EnumPropertyItem(name="2")]
     
-    positions_X_model = bpy.props.EnumProperty(name="Regression Model",items=[("Linear_Harmonic", "Periodic with offset", "A harmonic regression model with an added linear component"),("Harmonic", "Periodic", "A harmonic regression model")])
-    positions_Y_model = bpy.props.EnumProperty(name="Regression Model",items=[("Linear_Harmonic", "Periodic with offset", "A harmonic regression model with an added linear component"),("Harmonic", "Periodic", "A harmonic regression model")])
-    positions_Z_model = bpy.props.EnumProperty(name="Regression Model",items=[("Linear_Harmonic", "Periodic with offset", "A harmonic regression model with an added linear component"),("Harmonic", "Periodic", "A harmonic regression model")])
+    positions_X_model = bpy.props.EnumProperty(name="Regression model",items=[("Linear_Harmonic", "Periodic with offset", "A harmonic regression model with an added linear component"),("Harmonic", "Periodic", "A harmonic regression model")])
+    positions_Y_model = bpy.props.EnumProperty(name="Regression model",items=[("Linear_Harmonic", "Periodic with offset", "A harmonic regression model with an added linear component"),("Harmonic", "Periodic", "A harmonic regression model")])
+    positions_Z_model = bpy.props.EnumProperty(name="Regression model",items=[("Linear_Harmonic", "Periodic with offset", "A harmonic regression model with an added linear component"),("Harmonic", "Periodic", "A harmonic regression model")])
     
     #positions_Y_model = bpy.props.EnumProperty(enum_items=model_enum)
     #positions_Z_model = bpy.props.EnumProperty(enum_items=model_enum)

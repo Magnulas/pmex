@@ -71,6 +71,9 @@ class MotionExtractor():
     
     def getCocycleCount(self):
         return self.compop.getCocycleCount()
+
+    def getCocycleLength(self,index):
+        return self.compop.getCocycleLength(index)
     
     def getPeriodicMotion(self, cocycle_index, cloud_label,useVelocity=True,useAcceleration=True,jointRegressionModel = HarmonicRegression(20), translationRegressionModels=None):
         cycle_map = self.compop.getCircularMapping(cocycle_index)

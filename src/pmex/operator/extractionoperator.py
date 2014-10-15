@@ -46,6 +46,10 @@ class ExtractionOperator(bpy.types.Operator):
         for blend_object in context.selected_objects:
             action = blend_object.animation_data.action
             print("Finding periodic motion for action",action.name)
+
+            if options.model_complexity
+
+            if optiona.translation_model_complexity
             
             root_bone, bones = selectBones(blend_object,context)
             
@@ -57,7 +61,9 @@ class ExtractionOperator(bpy.types.Operator):
             if options.enable_advanced:
                 delay_embedding = options.delay_embedding
 
-            print(time.asctime(),"Constructing simplicial complex and cocycels.")
+            if options.
+
+            print(time.asctime(),"Step 1 of 2. Constructing simplicial complex and cocycels.")
             motext = MotionExtractor(points,options.dmax,delay_embedding,locations=locations,prime=options.prime)
             print(time.asctime(),"Complex constructed.")
             if options.enable_advanced and options.manual_cocycle_selection:
@@ -77,9 +83,10 @@ class ExtractionOperator(bpy.types.Operator):
                 print("No cocycels found at distance",options.dmax)
 
             skeletons = []
-            
+
+            print(time.asctime(),"Step 2 of 2. Constructing actions.")
             for i in range(0,len(indices)):
-                print(time.asctime(),"Constructing action",i+1,"of",len(indices))
+                print(time.asctime(),"Constructing action",i+1,"of",len(indices),"for cocycle of length",motext.getCocycleLength(i))
                 #try:
                 skeleton, loc = motext.getPeriodicMotion(indices[i],action.name,options.use_velocity,options.use_acceleration,HarmonicRegression(options.model_complexity),loc_models)
                 for j in range(0,len(skeleton)):
@@ -92,10 +99,7 @@ class ExtractionOperator(bpy.types.Operator):
                     #print(err)
                     #print("Failed to lift prime cocycle to integer cocycle. Try running the operation again with a different prime number.")
                     
-            #skeletons.append(skeleton + loc)
-                
-            
-            print(time.asctime(),"Outputing actions")
+            print(time.asctime(),"Outputting actions")
                 
             createActions(blend_object,skeletons,paths,options.sampling_density)
             
@@ -105,14 +109,6 @@ class ExtractionOperator(bpy.types.Operator):
     
     def invoke(self, context, event):
         return self.execute(context)
-
-#def importFunction(name):
-#    strs = name.rsplit(".",1)
-#    moduleName = strs[0]
-#    functionName = strs[1]
-#    module = importlib.import_module(moduleName)
-#    func = getattr(module, functionName)
-#    return module, func
 
 def selectBones(blend_object,context):
     bones = []
@@ -152,15 +148,12 @@ def createPointCloud(root_bone,bones,action,options):
     frame_indices = range(int(start_frame-action.frame_range[0]),
                            int(end_frame-action.frame_range[0]),options.sampling_density)
 
-
     curves = []
-#    root_bone_indices = []
     locations = []
 
     curve_paths = []
     loc_paths = []
     loc_models = []
-    #root_bone = None
 
     for b in bones:
         
@@ -169,26 +162,12 @@ def createPointCloud(root_bone,bones,action,options):
         if d_path in index_dictionary:
             for i in index_dictionary[d_path]:
                 curve,path = getCurve(frame_indices,action.fcurves[i])
-#                if b == root_bone:
-#                    curves.append(cos(curve))
-#                    curve_paths.append(path)
-#                    
-#                    curves.append(sin(curve))
-#                    curve_paths.append(path)
-#                    
-#                    root_bone_indices.append((len(curves)-2,len(curves)-1))
-#                else:   
-#                    curves.append(curve)
-#                    curve_paths.append(path)
-#                if b == root_bone:
-#                    root_bone_indices.append(len(curves)-1)
-
                 curves.append(curve)
                 curve_paths.append(path)
                 
         d_path_loc = "pose.bones[\"" + b.name + "\"].location"
 
-        if options.use_positions and d_path_loc in index_dictionary and b == root_bone:
+        if options.use_positions and d_path_loc in index_dictionary:
 
             for i in index_dictionary[d_path_loc]:
                 array_ind = action.fcurves[i].array_index
@@ -205,13 +184,6 @@ def createPointCloud(root_bone,bones,action,options):
                     else:
                         loc_models.append(HarmonicRegression(options.translation_model_complexity))
 
-#    dummy_dim = len(curves)*[False]
-#    d = 0
-#    for d in range(0,len(curves)):
-#        if var(curves[d]) == 0:
-#            dummy_dim[d] = True
-    
-#    dim = len([dummy for dummy in dummy_dim if not(dummy)])
     dim = len(curves)
     point_cloud = [ dim*[0] for i in range(0,len(frame_indices)) ]
     for d in range(0,dim):
@@ -248,7 +220,10 @@ def createActions(blend_object,skeletons,data_paths, density=1):
     name = blend_object.animation_data.action.name
     for skeleton_points in skeletons:
         dim = len(skeleton_points)
-        new_name = "{0}{1}{2}{3}".format("Periodic",name, ".",i)
+        if len(skeletons)==1:
+            new_name = "{0}{1}".format("Periodic",name)
+        else:
+            new_name = "{0}{1}{2}{3}".format("Periodic",name, ".",i)
         action_index = bpy.data.actions.find(new_name)
                 
         if action_index != -1:
@@ -259,13 +234,7 @@ def createActions(blend_object,skeletons,data_paths, density=1):
         new_action.use_fake_user = True
                 
         d = 0
-#        bone_ind = 0
         while d < dim:
-#            if bone_ind < len(root_bone_indices) and d == root_bone_indices[bone_ind][0]:
-#                points = coordinates_to_radians(skeleton_points[d],skeleton_points[d+1])
-#                d = d+1
-#                bone_ind = bone_ind + 1
-#            else:   
             points = skeleton_points[d]
 
             path = data_paths[d][0]
@@ -292,18 +261,3 @@ def createActions(blend_object,skeletons,data_paths, density=1):
             blend_object.animation_data.action.use_fake_user = True
             blend_object.animation_data.action = new_action
         i = i + 1
-        
-#def coordinates_to_radians(coss,sins):
-#    
-#    r = numpy.power(sins,2) + numpy.power(coss,2)
-#    x = coss/numpy.sqrt(r)
-#    y = sins/numpy.sqrt(r)
-#    
-#    radians = numpy.arccos(x)
-#    offset = numpy.arccos(-x)
-#
-#    for i in range(0,len(radians)):
-#        if y[i] < 0:
-#            radians[i] = radians[i] + 2*offset[i]
-#   
-#    return radians

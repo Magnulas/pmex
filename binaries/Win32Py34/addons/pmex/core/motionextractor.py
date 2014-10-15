@@ -41,22 +41,14 @@ class MotionExtractor():
     def __init__(self, points_radians,distance,delay_embedding=0, locations=None,prime=11):
            
         points = points_radians
-#        points = len(points_radians)*[None]
-#        for i in range(0,len(points)):
-#            points[i] = 2*len(points_radians[0])*[0]
-#            for j in range(0,len(points_radians[i])):
-#                points[i][2*j] = math.cos(points_radians[i][j])
-#                points[i][2*j+1] = math.sin(points_radiPersistenDiagramWidgetans[i][j])
-                
+          
         if delay_embedding > 0:
             delay_embedding = delay_embedding + 1
             delay_embedded_point = MotionExtractor.delay_embbed(points,delay_embedding)
             points = points[:len(points)-delay_embedding]
         else:
             delay_embedded_point = points
-            
-        #delay_embedded_point = [delay_embedded_point[i] for i in range(0,len(delay_embedded_point),subsampling)]
-        
+                    
         self.positions_radians = [points_radians[i] for i in range(0,len(delay_embedded_point))]
         self.positions = [points[i] for i in range(0,len(delay_embedded_point))]
 
@@ -71,16 +63,15 @@ class MotionExtractor():
     
     def getCocycleCount(self):
         return self.compop.getCocycleCount()
+
+    def getCocycleLength(self,index):
+        return self.compop.getCocycleLength(index)
     
     def getPeriodicMotion(self, cocycle_index, cloud_label,useVelocity=True,useAcceleration=True,jointRegressionModel = HarmonicRegression(20), translationRegressionModels=None):
         cycle_map = self.compop.getCircularMapping(cocycle_index)
         V = MotionExtractor.uniformlyDistributeSamples(cycle_map)
         ccluw = MotionExtractor.unwrap_simple(V)
         (ar,vr) = numpy.polyfit(range(len(ccluw)),ccluw,1)
-        
-        if ar < 0:
-            V = numpy.array([1 - c for c in V])
-            cycle_map = numpy.array([1 - c for c in cycle_map])
         
         npoints = 1/abs(ar)
         n_cycels = len(cycle_map)/npoints
@@ -98,6 +89,9 @@ class MotionExtractor():
         skeletons = [D * [None] for i in range(0,1)] 
         out_locations = [] if self.locations == None else len(self.locations[0])*[None]
         tList = numpy.arange(0, 1, 1.0 / npoints)
+
+        if ar<0:
+            tList = tList[::-1] #reverse for negative slope
 
         t = ccluw
         dt = ccluw

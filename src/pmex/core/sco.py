@@ -61,9 +61,9 @@ class SimplicialComplexOperator():
         internalToExternalMap = {}
 
         for j, s in enumerate(self.simplices):
-#            percentage = j/len(self.simplices)
-#            sys.stdout.write('\r {:.2f}%'.format(100*percentage))
-#            sys.stdout.flush()
+            percentage = j/len(self.simplices)
+            sys.stdout.write('\r {:.2f}%'.format(100*percentage))
+            sys.stdout.flush()
             
             i, d, ccl = ch.add([complex[sb] for sb in s.boundary], (s.dimension(), s.data), store=(s.dimension() < skeleton))
             complex[s] = i
@@ -74,7 +74,7 @@ class SimplicialComplexOperator():
                 orders = [e.si.order for e in ccl]
                 self.ccls.append((ccl, d[1], s.data,orders))
 
-#        print('\r {:.2f}%'.format(100))
+        print('\r {:.2f}%'.format(100))
     
         for ccl in ch:
             if ccl.birth[0] == skeleton - 1:
@@ -83,23 +83,16 @@ class SimplicialComplexOperator():
                             
         self.ccls.sort(key=lambda tup : tup[2] - tup[1] , reverse=True)
 
-#        for ccl in self.ccls:
-#            print("B")
-#            orders = [e.si.order for e in ccl[0]]
-#            print(orders)
-#            print(max(orders),min(orders))
-              
-            #self.cclOrders.append([internalToExternalMap[e.si.order] for e in ccl[0]])
-   
-#    def __del__(self):
-#        print("delete")
-#        del self.ccls
-#        del self.simplices
-#        del self.cclOrders
-
-                
     def getCocycleCount(self):
         return len(self.ccls)
+
+    def getCocycleLength(self, index):
+        if index < len(self.ccls):
+            birth = self.ccls[cocycle_index][1]
+            death = self.ccls[cocycle_index][2]
+            return death - birth
+        else:
+            return -1
         
     def getCocycels(self):
         return self.ccls
@@ -111,31 +104,14 @@ class SimplicialComplexOperator():
 
         ccl = self.ccls[cocycle_index][0]
         death = self.ccls[cocycle_index][2]
-#        birth = ccl[2]
         orders = self.ccls[cocycle_index][3]
         coefficients = [self.normalized(e.coefficient) for e in ccl]
         ccl_list = [(coefficients[i],orders[i]) for i in range(0,len(orders))]
        
         cycle_map = self.smooth(death, ccl_list)
         cycle_map = numpy.mod(cycle_map, 1.0)
-        
-        #ccluw = self.unwrap_simple(ccl[:,1])
-        
-#        npoints = int(round(abs(1/ar))) 
-    
 
-#        d = 10000
-#        
-#        area = numpy.sum(numpy.exp(gmm.score_samples(numpy.linspace(0,1,d))[0]))/d
-#        time_map = len(cycle_map)*[0]
-#
-#        for i in range(0,len(cycle_map)):
-#            logprob,responsibilities = gmm.score_samples(numpy.linspace(0,cycle_map[i],d))
-#            time_map[i] = numpy.sum(numpy.exp(logprob))*cycle_map[i]/d
-#            time_map[i] = time_map[i]/area
         return cycle_map
-        #return cycle_map #time_map,abs(1/ar),cycle_map, gmm
-        #return cycle_map, abs(1/ar)
 
     def normalized(self,coefficient):
         if coefficient > self.prime / 2:
