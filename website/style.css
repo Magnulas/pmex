@@ -1,0 +1,54 @@
+﻿body {
+    font-family: sans-serif;
+    padding-top: 50px;
+    padding-left: 5%;
+    padding-right: 5%;
+    counter-reset: h2counter;
+}
+
+.video {
+    width: 640px;
+    height: 480px;
+
+}
+
+h1 {
+    counter-reset: h2counter;
+}
+h2 {
+    counter-reset: h3counter;
+}
+h2::before {
+    content: counter(h2counter) ".\0000a0\0000a0";
+    counter-increment: h2counter;
+}
+h3::before {
+    content: counter(h2counter) "." counter(h3counter) ".\0000a0\0000a0";
+    counter-increment: h3counter;
+}
+.indented
+{
+    padding-left: 50pt;
+    padding-right: 50pt;
+}
+.installation{
+    background-color: #fbfb96;
+    padding-left: 25pt;
+    padding-right: 25pt;
+    border: 5px groove #fbfb96;padding:3px;
+}
+.download{
+    background-color: #61B329;
+    padding-left: 25pt;
+    padding-right: 25pt;
+    border: 5px groove #61B329;padding:3px;
+}
+.background{
+    border: 5px groove #87CEFA;padding:3px;
+    background-color: #87CEFA;
+    padding-left: 50pt;
+    padding-right: 50pt;
+}
+section, article, aside, footer, header, nav, hgroup {
+  display:block;
+}

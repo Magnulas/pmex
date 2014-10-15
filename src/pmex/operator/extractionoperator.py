@@ -82,7 +82,7 @@ class ExtractionOperator(bpy.types.Operator):
             for i in range(0,len(indices)):
                 print(time.asctime(),"Constructing action",i+1,"of",len(indices),"for cocycle of length","%.3f" % motext.getCocycleLength(i))
                 #try:
-                skeleton, loc = motext.getPeriodicMotion(indices[i],action.name,options.use_velocity,options.use_acceleration,HarmonicRegression(options.model_complexity),loc_models)
+                skeleton, loc = motext.getPeriodicMotion(indices[i],action.name,options.use_velocity,options.use_acceleration,options.accuracy,HarmonicRegression(options.model_complexity),loc_models)
                 for j in range(0,len(skeleton)):
                     skeletons.append(skeleton[j] + loc[j])
                     if options.plot_pca:

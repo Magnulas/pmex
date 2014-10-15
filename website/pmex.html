@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+<!--[if lt IE 9]>
+  <script>
+    document.createElement("header" );
+    document.createElement("footer" );
+    document.createElement("section");
+    document.createElement("aside"  );
+    document.createElement("nav"    );
+    document.createElement("article");
+    document.createElement("hgroup" );
+    document.createElement("time"   );
+  </script>
+  <noscript>
+     <strong>Warning !</strong>
+     Because your browser does not support HTML5, some elements are simulated using JScript.
+     Unfortunately your browser has disabled scripting. Please enable it in order to display this page.
+  </noscript>
+<![endif]-->
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Periodic Motion Extractor for Blender</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script type="text/javascript" src="generated_toc.js"></script>
+</head>
+<body>
+    <div class="background">
+        <div>
+            <h1>Welcome to the homepage for the Periodic Motion Extractor plugin for Blender!</h1>
+
+            <p>
+                On this webpage I've collected the source code and links to resources used for creating my plugin for <a href="http://blender.org/">Blender</a>.
+                The plugin in question concerns itself with extracting periodic motions from motion capture data.
+                I wrote this plugin as part of my <a href="NotPublishedYet">Master's Thesis in Machine Learning</a> and I'm now making the plugin avaliable on this webpage.
+                Below you will find the source code, a binary version and some videos of a couple of extracted motions.
+            </p>
+
+            <p>
+                Notice that the plugin depends on the following Python libraires:
+                <br /><br />
+                <a href="http://www.numpy.org/">Numpy</a><br />
+                <a href="http://cvxopt.org/">CVXOPT</a><br />
+                <a href="http://matplotlib.org/">Matplotlib</a><br />
+                <a href="http://scikit-learn.org">Scikit-learn</a><br />
+                <br />
+                Download, install and make sure Blender can find these libraries by adding them to your PYTHONPATH.
+                The plugin only supports Python 3, not Python 2, since Blender has moved onto Python 3.
+            </p>
+
+            <div class="generate_from_h2" id="generated-toc"></div>
+
+            <section>
+                <h2>Binaries</h2>
+                <div class="indented">
+                    <section>
+                        <h3>File information</h3>
+                        <p>
+                            Currently there are only binaries for Windows 32 bit Python 3.4. If Blender upgrades their Python versions later on I'll add additional binaries.
+                            I'm not planning on adding 64 bit versions, because I had problems compiling Dionysus for 64 bit, but if there's a demand for it I might give it another try.
+                        </p>
+                        <a href="https://github.com/Magnulas/pmex/tree/master/binaries/Win32Py34">Windows 32 bit Python 3.4 binary</a>
+                    </section>
+                    <section>
+                        <h3>Download</h3>
+                        <div class="download">
+                            svn checkout https://github.com/Magnulas/pmex/trunk/binaries/Win32Py34
+                        </div>
+                    </section>
+
+                    <section>
+                        <h3>Installation</h3>
+                        <div class="installation">
+                            <ol>
+                                <li>Make sure you are running Blender 32-bit with Python 3.4.</li>
+                                <li>Merge the addons folder with Blender/X.XX/scripts/addons.</li>
+                                <li>Enable the plugin in Blenders user preferences under the addons tab. Search for Periodic Motion Extractor </li>
+                            </ol>
+                        </div>
+                    </section>
+                    <section>
+                        <h3>Test</h3>
+                        <p>
+                            Try downloading the following .blend file and test out the plugin by selecting the armature and invoking the Periodic Motion Extractor operator.
+                            I recommend launching Blender from a console so that you can view output from the plugin in the console.
+                            For the motion capture data stored in the .blend file it takes a little less than one minute for the operator to complete for me, so be patient.
+                        </p>
+                        <div class="download">
+                            svn checkout https://github.com/Magnulas/pmex/trunk/example.blend
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+            <section>
+                <h2>Building</h2>
+                <div class="indented">
+                    <section>
+                        <h3>File information</h3>
+                        <p>
+                            The source code can be found at: <a href="https://github.com/Magnulas/pmex/tree/master/src/pmex">https://github.com/Magnulas/pmex/tree/master/src/pmex</a>
+                        </p>
+                        <p>
+                            <a href="http://www.mrzv.org/software/dionysus/">Dionysus</a> is a C++ library that the plugin requiers.
+                            The Dionysus version we are using is a slightly modified version to make it support Windows and Python 3. The modified version can be found over at <a href="https://github.com/Magnulas/pmex/tree/master/src/Dionysus">https://github.com/Magnulas/pmex/tree/master/src/Dionysus</a>.
+                        </p>
+                    </section>
+                    <section>
+                        <h3>Download</h3>
+                        <div class="download">
+                            svn checkout https://github.com/Magnulas/pmex/trunk/src/
+                        </div>
+                    </section>
+                    <section>
+                        <h3>Installation</h3>
+                        <div class="indented">
+                            <h4>Unix</h4>
+                            <div class="installation">
+                                <ol>
+                                    <li>Drop the pmex folder in Blender/X.XX/scripts/addons.</li>
+                                    <li>
+                                        Build Dionysus as described at <a href="http://www.mrzv.org/software/dionysus/">Dionysus</a>.
+                                        Make sure that Boost uses the same Python 3 version for Boost.Python as the Python version Blender is using.
+                                        Make sure that CMake uses the correct Python version when building the Python bindings.
+                                    </li>
+                                    <li>Add Dionysus/build/bindings/python and Dionysus/build/bindings/python/dionysus to your PYTHONPATH.</li>
+                                    <li>Enable the plugin in Blenders user preferences under the addons tab. Search for Periodic Motion Extractor.</li>
+                                </ol>
+                            </div>
+                            <h4>Windows</h4>
+                            <p>
+                                Note: Beware that if you try to compile for 64 bit Windows that you will probably run into problems, so I recommend to stick to 32 bit. I also recommend to use MinGW when compiling Dionysus, since I never got it to work with Visual-Studio.
+                            </p>
+                            <div class="installation">
+                                <ol>
+                                    <li>Drop the pmex folder in Blender/X.XX/scripts/addons.</li>
+                                    <li>Download and install <a href="http://www.cmake.org/">CMake</a>.</li>
+                                    <li>Download and install <a href="http://www.mingw.org/">MinGW</a> or MinGW-w64, depending on if your Blender is 32 bit or 64 bit.</li>
+                                    <li>Download <a href="http://www.boost.org/">Boost</a>.</li>
+                                    <li>
+                                        Build Boost.
+                                        <ul>
+                                            <li>Run “.\bootstrap mingw”</li>
+                                            <li>Run “.\b2 --toolset=gcc --address-model=XX --with-python --with-program_options --with-serialization --with-signals” but replace XX with 32 or 64 depending on if your Blender version is 32 or 64 bit</li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        Build Dionysus.
+                                        <ul>
+                                            <li>Run “cd Dionysus/build”</li>
+                                            <li>
+                                                Run “cmake -G "MinGW Makefiles" -DPYTHON_LIBRARY=C:/PythonXX/libs/ -DPYTHON_INCLUDE_DIR=C:/PythonXX/include ..” but replace C:/PythonXX/ with your installation directory for Python.
+                                                Make sure the Python version you are using is the same as Blenders.
+                                            </li>
+                                            <li>Run “mingw32-make”.</li>
+                                            <li>Add Dionysus/build/bindings/python and Dionysus/build/bindings/python/dionysus to your PYTHONPATH.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Enable the plugin in Blenders user preferences under the addons tab. Search for Periodic Motion Extractor.</li>
+                                </ol>
+                            </div>
+
+                            <h4>Mac</h4>
+                            <p>
+                                ???
+
+                                I don't own a Mac or have much experience with them, so you are on your own. If anyone can compile it on a Mac send me instructions and I'll add those here.
+                            </p>
+                        </div>
+                    </section>
+                    <section>
+                        <h3>Test</h3>
+                        <p>
+                            Try downloading the following .blend file and test out the plugin by selecting the armature and invoking the Periodic Motion Extractor operator.
+                            I recommend launching Blender from a console so that you can view output from the plugin in the console.
+                            For the motion capture data stored in the .blend file it takes a little less than one minute for the operator to complete for me, so be patient.
+                        </p>
+                        <div class="download">
+                            svn checkout https://github.com/Magnulas/pmex/trunk/example.blend
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+            <section>
+                <h2>Videos</h2>
+                <p>
+                    Some example videos of output motions that I got when using motion capture data from <a href="http://mocap.cs.cmu.edu/">http://mocap.cs.cmu.edu/</a>.
+                    The human model used in the videos were created using <a href="http://www.makehuman.org/">Make Human</a>.
+                </p>
+                <div class="indented">
+                    <iframe class="video" src="https://www.youtube.com/embed/UrXDTXnMBjU"></iframe>
+
+                    <iframe class="video" src="https://www.youtube.com/embed/mwI0uZ-2qVA"></iframe>
+                </div>
+            </section>
+
+        </div>
+    </div>
+    <footer>
+        <hr>
+        Responsible for this page: Magnus Raunio <a href="mailto:mraunio@kth.se">&lt;mraunio@kth.se&gt;</a>
+        <br>
+        Latest change 15 October 2014
+    </footer>
+</body>
+</html>

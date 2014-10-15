@@ -86,6 +86,8 @@ class ExtractionPanel(bpy.types.Panel):
         if props.enable_advanced:
             outputBox.prop(props,'use_velocity')
             outputBox.prop(props,'use_acceleration') 
+            if props.use_acceleration or props.use_velocity:
+                outputBox.prop(props,'accuracy')
         
         if props.enable_advanced:
             analyticsBox = layout.box()
@@ -94,14 +96,6 @@ class ExtractionPanel(bpy.types.Panel):
             analyticsBox.prop(props,'plot_pca')
             if props.plot_pca:
                 analyticsBox.prop(props,'plot_output_folder')
-                
-        #advancedBox = layout.box()
-        #advancedBox.label(text="Advanced")
-        #advancedBox.prop(props, 'use_custom_functions')
-        #box = advancedBox.box()
-        #if props.use_custom_functions:
-        #    advancedBox.prop(props, 'regression_model')
-
             
 class PoseExtractionPanel(ExtractionPanel):
     bl_idname = "pmex.posepanel"
