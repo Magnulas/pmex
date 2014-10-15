@@ -46,10 +46,6 @@ class ExtractionOperator(bpy.types.Operator):
         for blend_object in context.selected_objects:
             action = blend_object.animation_data.action
             print("Finding periodic motion for action",action.name)
-
-            if options.model_complexity
-
-            if optiona.translation_model_complexity
             
             root_bone, bones = selectBones(blend_object,context)
             
@@ -60,8 +56,6 @@ class ExtractionOperator(bpy.types.Operator):
             delay_embedding = 0
             if options.enable_advanced:
                 delay_embedding = options.delay_embedding
-
-            if options.
 
             print(time.asctime(),"Step 1 of 2. Constructing simplicial complex and cocycels.")
             motext = MotionExtractor(points,options.dmax,delay_embedding,locations=locations,prime=options.prime)
@@ -86,7 +80,7 @@ class ExtractionOperator(bpy.types.Operator):
 
             print(time.asctime(),"Step 2 of 2. Constructing actions.")
             for i in range(0,len(indices)):
-                print(time.asctime(),"Constructing action",i+1,"of",len(indices),"for cocycle of length",motext.getCocycleLength(i))
+                print(time.asctime(),"Constructing action",i+1,"of",len(indices),"for cocycle of length","%.3f" % motext.getCocycleLength(i))
                 #try:
                 skeleton, loc = motext.getPeriodicMotion(indices[i],action.name,options.use_velocity,options.use_acceleration,HarmonicRegression(options.model_complexity),loc_models)
                 for j in range(0,len(skeleton)):
@@ -145,8 +139,20 @@ def createPointCloud(root_bone,bones,action,options):
         end_frame = min(end_frame, options.frame_range + options.start_frame)
         start_frame = min(end_frame,options.start_frame)
 
-    frame_indices = range(int(start_frame-action.frame_range[0]),
-                           int(end_frame-action.frame_range[0]),options.sampling_density)
+    start_i = 0
+    frame = 0
+    while frame<start_frame:
+        frame = action.fcurves[0].keyframe_points[start_i].co[0]
+        start_i = start_i + 1
+
+    end_i = start_i
+    while frame<end_frame:
+        frame = action.fcurves[0].keyframe_points[end_i].co[0]
+        end_i = end_i + 1
+
+    frame_indices = range(start_i,end_i,options.sampling_density)
+    #frame_indices = range(int(start_frame-action.frame_range[0]),
+    #                       int(end_frame-action.frame_range[0]),options.sampling_density)
 
     curves = []
     locations = []
@@ -204,11 +210,10 @@ def getCurve(frame_indices,fcurve):
     frames = len(frame_indices)
     curve = frames*[0]
     path = (fcurve.data_path,fcurve.array_index)
-    j = 0
-
+    
     for j in range(0,frames):
-        time = frame_indices[j]
-        curve[j] = fcurve.keyframe_points[time].co[1]
+        i = frame_indices[j]
+        curve[j] = fcurve.keyframe_points[i].co[1]
         j = j + 1
         
     return numpy.array(curve), path
@@ -247,11 +252,11 @@ def createActions(blend_object,skeletons,data_paths, density=1):
                 
                 value = points[time]
                 fcurve.keyframe_points[j].co = j*density, value
-                fcurve.keyframe_points[j].interpolation = "LINEAR"
+                fcurve.keyframe_points[j].interpolation = "BEZIER"
                 j = j + 1
                   
             modifier = fcurve.modifiers.new(type="CYCLES")
-            fcurve.extrapolation = "LINEAR"
+            fcurve.extrapolation = "CONSTANT"
             if not(re.match(".*location$",data_paths[d][0]) == None):
                 modifier.mode_after = 'REPEAT_OFFSET'
                 modifier.mode_before = 'REPEAT_OFFSET'

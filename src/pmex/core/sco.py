@@ -86,8 +86,8 @@ class SimplicialComplexOperator():
     def getCocycleCount(self):
         return len(self.ccls)
 
-    def getCocycleLength(self, index):
-        if index < len(self.ccls):
+    def getCocycleLength(self, cocycle_index):
+        if cocycle_index < len(self.ccls):
             birth = self.ccls[cocycle_index][1]
             death = self.ccls[cocycle_index][2]
             return death - birth
