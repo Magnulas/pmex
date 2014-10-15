@@ -56,7 +56,8 @@ class ExtractionProperties(bpy.types.PropertyGroup):
     
     #positions_Y_model = bpy.props.EnumProperty(enum_items=model_enum)
     #positions_Z_model = bpy.props.EnumProperty(enum_items=model_enum)
-    
+
+    accuracy = bpy.props.IntProperty(name="Derivative accuracy", default=4, min=1, max=4)
     use_velocity = bpy.props.BoolProperty(name="Use joint velocity", default=True)
     use_acceleration = bpy.props.BoolProperty(name="Use joint acceleration", default=True)
     
@@ -66,3 +67,5 @@ class ExtractionProperties(bpy.types.PropertyGroup):
     plot_output_folder = bpy.props.StringProperty(name="Plot output folder",default="plots")
     plot_pca = bpy.props.BoolProperty(name="PCA plot motion", default=False)
     manual_cocycle_selection = bpy.props.BoolProperty(name="Select cocycels manually", default=False)
+
+

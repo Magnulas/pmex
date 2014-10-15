@@ -186,9 +186,7 @@ def mul(matrix,array):
         
     return res_array
 
-def velocityAcceleration(data, cycle_map):
-    
-    accuracy = 4
+def velocityAcceleration(data, cycle_map, accuracy):
     central_velocity = (len(data)-2*accuracy)*[0]
     central_acceleration = (len(data)-2*accuracy)*[0]
     forward_velocity = (accuracy)*[0]
@@ -220,11 +218,15 @@ def velocityAcceleration(data, cycle_map):
         ub = i + accuracy + 1
                 
         alphas = cycle_map[lb:ub]
-        alphas = [alphas[4],alphas[5],alphas[3],alphas[6],alphas[2],alphas[7],alphas[1],alphas[8],alphas[0]]
-        #alphas = [alphas[3],alphas[4],alphas[2],alphas[5],alphas[1],alphas[6],alphas[0]]
+        alphas = centralCoefficientsOrder(alphas)
+        #acc=4 alphas = [alphas[4],alphas[5],alphas[3],alphas[6],alphas[2],alphas[7],alphas[1],alphas[8],alphas[0]]
+        #acc=3 alphas = [alphas[3],alphas[4],alphas[2],alphas[5],alphas[1],alphas[6],alphas[0]]
+        #acc=2 alphas = [alphas[2],alphas[3],alphas[1],alphas[4],alphas[0]]
+        #acc=1 alphas = [alphas[1],alphas[2],alphas[0]]
 
         dat = data[lb:ub]
-        dat = numpy.array([dat[4],dat[5],dat[3],dat[6],dat[2],dat[7],dat[1],dat[8],dat[0]])
+        dat = numpy.array(centralCoefficientsOrder(dat))
+        #dat = numpy.array([dat[4],dat[5],dat[3],dat[6],dat[2],dat[7],dat[1],dat[8],dat[0]])
         #dat = numpy.array([dat[3],dat[4],dat[2],dat[5],dat[1],dat[6],dat[0]])
         
         delta = generalFiniteDifference(3,accuracy*2,alphas,alphas[0])
@@ -245,6 +247,24 @@ def velocityAcceleration(data, cycle_map):
     acc = numpy.concatenate((forward_acceleration,central_acceleration,backward_acceleration))    
     
     return vel,acc
+
+def centralCoefficientsOrder(dat):
+
+    accuracy = int(len(dat)/2)
+    tmp = numpy.array(len(dat)*[0])
+
+    if len(dat) % 2 == 1:
+        for i in range(0,len(dat)):
+            sign = 1 if i % 2 == 1 else -1 
+            tmp[i] = dat[accuracy+int((i+1)/2)*sign]
+        return tmp
+    else:
+        
+        for i in range(0,len(dat)):
+            sign = 1 if i % 2 == 1 else -1 
+            tmp[i] = dat[(accuracy-1)+int((i+1)/2)*sign]
+            #3 4 2 5 1 6 0 7
+        return tmp
 
 def generalFiniteDifference(M,N, alpha, x0):
     

@@ -67,7 +67,7 @@ class MotionExtractor():
     def getCocycleLength(self,index):
         return self.compop.getCocycleLength(index)
     
-    def getPeriodicMotion(self, cocycle_index, cloud_label,useVelocity=True,useAcceleration=True,jointRegressionModel = HarmonicRegression(20), translationRegressionModels=None):
+    def getPeriodicMotion(self, cocycle_index, cloud_label,useVelocity=True,useAcceleration=True,accuracy=4,jointRegressionModel = HarmonicRegression(20), translationRegressionModels=None):
         cycle_map = self.compop.getCircularMapping(cocycle_index)
         V = MotionExtractor.uniformlyDistributeSamples(cycle_map)
         ccluw = MotionExtractor.unwrap_simple(V)
@@ -84,7 +84,7 @@ class MotionExtractor():
         positions = self.positions
         
         time_steps = numpy.linspace(0,n_cycels,len(ccluw))
-        velocities, accelerations = velocityAcceleration(positions,time_steps)
+        velocities, accelerations = velocityAcceleration(positions,time_steps,accuracy)
          
         skeletons = [D * [None] for i in range(0,1)] 
         out_locations = [] if self.locations == None else len(self.locations[0])*[None]
@@ -132,7 +132,7 @@ class MotionExtractor():
             else:
                 skeletons[0][d] = numpy.array(len(tList)*[numpy.mean(X)])
         
-        velocities, accelerations = velocityAcceleration(self.locations,time_steps)
+        velocities, accelerations = velocityAcceleration(self.locations,time_steps,accuracy)
         
         for d in range(0, len(out_locations)):
             percentage = (d+D)/(D+len(out_locations))
